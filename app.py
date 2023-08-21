@@ -23,9 +23,10 @@ else:
   model_name = f"{app.config['models_folder']}stablecode-completion-alpha-3b-4k.ggmlv1.q5_1.bin"
   model_type = "gpt-neox"
 
-model = AutoModelForCausalLM.from_pretrained(model_name, model_type=model_type)
+model = AutoModelForCausalLM.from_pretrained(model_name,
+                                             model_type=model_type)
 def suggest(query):
-  return model(query, temperature=0.2, max_new_tokens=73)
+  return model(query, temperature=0.2, max_new_tokens=42)
 
 @app.route("/")
 def main():
@@ -37,14 +38,14 @@ def code_completions():
   query = data.get("q")
   log.info(f"Starting Query={query}")
   if query is None or len(query) <= 3:
-    return nil #jsonify({'error': 'Missing query_param in request'}), 400
+    return nil
   else:
     result = suggest(query)
     log.info(f"/Finished Result={result}")
     if result is not None:
       return result
     else:
-      return jsonify({'error': 'No results'}), 404
+      return nil
 
 if __name__ == "__main__":
   app.run(host="127.0.0.1", port=3737)
