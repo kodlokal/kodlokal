@@ -1,12 +1,16 @@
 # Kodlokal server
 
-# Make a POST request
+## Install
+
+```bash
+git clone git@github.com:kodlokal/kodlokal-gateway.git
+cd kodlokal-gateway
+python -m venv v
+pip install -r requirements.txt
+```
+
+## Run
 
 ```
-POST http://localhost:3737/code/completions
-Content-Type: application/json
-
-{
-  "q": "def hello_world:"
-}
+gunicorn --timeout 60 -w 1 -b localhost:3737 app:app
 ```
