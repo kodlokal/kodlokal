@@ -7,7 +7,6 @@ git clone git@github.com:kodlokal/kodlokal-gateway.git
 cd kodlokal-gateway
 python -m venv v
 pip install -r requirements.txt
-
 # download models
 mkdir models
 wget https://huggingface.co/TheBloke/stablecode-completion-alpha-3b-4k-GGML/resolve/main/stablecode-completion-alpha-3b-4k.ggmlv1.q5_1.bin
