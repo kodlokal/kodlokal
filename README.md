@@ -8,7 +8,7 @@ cd kodlokal-gateway
 python -m venv v
 pip install -r requirements.txt
 # download models
-mkdir models
+mkdir models && cd models
 wget https://huggingface.co/TheBloke/stablecode-completion-alpha-3b-4k-GGML/resolve/main/stablecode-completion-alpha-3b-4k.ggmlv1.q5_1.bin
 wget https://huggingface.co/TheBloke/WizardCoder-15B-1.0-GGML/resolve/main/WizardCoder-15B-1.0.ggmlv3.q5_1.bin
 ```
