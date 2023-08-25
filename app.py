@@ -23,14 +23,20 @@ text: {text_model_name}/{text_model_type}
 code: {code_model_name}/{code_model_type}"
 """)
 
-code_model = AutoModelForCausalLM.from_pretrained(code_model_name, model_type=code_model_type)
-text_model = AutoModelForCausalLM.from_pretrained(text_model_name, model_type=text_model_type)
+code_model = AutoModelForCausalLM.from_pretrained(code_model_name,
+                                                  model_type=code_model_type)
+text_model = AutoModelForCausalLM.from_pretrained(text_model_name,
+                                                  model_type=text_model_type)
 
 def code_suggest(query):
-  return code_model(query, temperature=0.2, max_new_tokens=42)
+  return code_model(query,
+                    temperature=app.config['CODE_TEMPERATURE'],
+                    max_new_tokens=app.config['CODE_MAX_NEW_TOKENS'])
 
 def text_suggest(query):
-  return text_model(query, temperature=0.2, max_new_tokens=42)
+  return text_model(query,
+                    temperature=app.config['TEXT_TEMPERATURE'],
+                    max_new_tokens=app.config['TEXT_MAX_NEW_TOKENS'])
 
 @app.route("/")
 def main():

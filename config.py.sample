@@ -1,5 +1,9 @@
 MODELS_FOLDER = './models/'
-TEXT_MODEL = 'orca_mini_v3_7b.ggmlv3.q5_0.bin'
+TEXT_MODEL = 'open-llama-3b-v2-q4_0.bin'
 TEXT_MODEL_TYPE = 'llama'
-CODE_MODEL =  'codellama-7b.ggmlv3.Q4_0.bin'
-CODE_MODEL_TYPE = 'llama'
+TEXT_TEMPERATURE = 0.37
+TEXT_MAX_NEW_TOKENS = 73
+CODE_MODEL =  'stablecode-completion-alpha-3b-4k.ggmlv1.q4_0.bin'
+CODE_MODEL_TYPE = 'gpt-neox'
+CODE_TEMPERATURE = 0.20
+CODE_MAX_NEW_TOKENS = 37
