@@ -1,0 +1,5 @@
+MODELS_FOLDER = './models/'
+TEXT_MODEL = 'orca_mini_v3_7b.ggmlv3.q5_0.bin'
+TEXT_MODEL_TYPE = 'llama'
+CODE_MODEL =  'codellama-7b.ggmlv3.Q4_0.bin'
+CODE_MODEL_TYPE = 'llama'
