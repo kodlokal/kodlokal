@@ -1,5 +1,6 @@
 from ctransformers import AutoModelForCausalLM
 from flask import Flask, request, jsonify
+from waitress import serve
 import logging
 
 import os
@@ -86,4 +87,8 @@ def text_completions():
       return nil
 
 if __name__ == "__main__":
-  app.run(host="127.0.0.1", port=3737)
+  serve(app,
+        host=app.config['HOST'],
+        port=app.config['PORT'],
+        threads=app.config['THREADS'],
+        channel_timeout=app.config['TIMEOUT'])
