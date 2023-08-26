@@ -23,7 +23,7 @@ Configure `config.py` by copying from `config.py.sample`
 
 ## Run
 
-Run small model
+Run the model. Use Ctrl+C  or Command+C on Mac to stop it.
 
 ```
 python app.py
