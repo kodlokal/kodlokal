@@ -3,6 +3,7 @@ PORT = 3737
 THREADS = 1
 TIMEOUT=60
 MODELS_FOLDER = './models/'
+GPU_LAYERS = 0
 TEXT_MODEL = 'open-llama-3b-v2-q4_0.bin'
 TEXT_MODEL_TYPE = 'llama'
 TEXT_TEMPERATURE = 0.37

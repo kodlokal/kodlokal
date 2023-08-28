@@ -25,9 +25,11 @@ code: {code_model_name}/{code_model_type}"
 """)
 
 code_model = AutoModelForCausalLM.from_pretrained(code_model_name,
-                                                  model_type=code_model_type)
+                                                  model_type=code_model_type,
+                                                  gpu_layers=app.config['GPU_LAYERS'])
 text_model = AutoModelForCausalLM.from_pretrained(text_model_name,
-                                                  model_type=text_model_type)
+                                                  model_type=text_model_type,
+                                                  gpu_layers=app.config['GPU_LAYERS'])
 
 def code_suggest(query):
   return code_model(query,
