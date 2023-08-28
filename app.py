@@ -14,20 +14,27 @@ logging.basicConfig(
 )
 log = logging.getLogger(__name__)
 
-code_model_name = f"{app.config['MODELS_FOLDER']}{app.config['CODE_MODEL']}"
-code_model_type = app.config['CODE_MODEL_TYPE']
-text_model_name = f"{app.config['MODELS_FOLDER']}{app.config['TEXT_MODEL']}"
-text_model_type = app.config['TEXT_MODEL_TYPE']
+code_model_exist = 'CODE_MODEL' in app.config
 
-print(f"""Using models
-text: {text_model_name}/{text_model_type}
-code: {code_model_name}/{code_model_type}"
-""")
+print("Using models:")
+if code_model_exist:
+  code_model_name = f"{app.config['MODELS_FOLDER']}{app.config['CODE_MODEL']}"
+  code_model_type = app.config['CODE_MODEL_TYPE']
+  print(f"""code: {code_model_name}/{code_model_type}""")
 
-code_model = AutoModelForCausalLM.from_pretrained(code_model_name,
+text_model_exist = 'TEXT_MODEL' in app.config
+if text_model_exist:
+  text_model_name = f"{app.config['MODELS_FOLDER']}{app.config['TEXT_MODEL']}"
+  text_model_type = app.config['TEXT_MODEL_TYPE']
+  print(f"""text: {text_model_name}/{text_model_type}""")
+
+if code_model_exist:
+  code_model = AutoModelForCausalLM.from_pretrained(code_model_name,
                                                   model_type=code_model_type,
                                                   gpu_layers=app.config['CODE_GPU_LAYERS'])
-text_model = AutoModelForCausalLM.from_pretrained(text_model_name,
+
+if text_model_exist:
+  text_model = AutoModelForCausalLM.from_pretrained(text_model_name,
                                                   model_type=text_model_type,
                                                   gpu_layers=app.config['TEXT_GPU_LAYERS'])
 
@@ -47,6 +54,8 @@ def main():
 
 @app.route("/code/completions", methods=["POST"])
 def code_completions():
+  if not code_model_exist:
+    return nil, 404
   data = request.json
   query = data.get("q")
   log.info(f"Starting Query={query}")
@@ -74,6 +83,8 @@ You are an AI assistant that follows instruction extremely well. Help as much as
 
 @app.route("/text/completions", methods=["POST"])
 def text_completions():
+  if not text_model_exist:
+    return nil, 404
   data = request.json
   query = data.get("q")
   prompt = text_prompt(query)
