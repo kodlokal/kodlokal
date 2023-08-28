@@ -8,6 +8,7 @@ git clone git@github.com:kodlokal/kodlokal-gateway.git
 cd kodlokal-gateway
 python -m venv v
 pip install -r requirements.txt
+pip install ctransformers[cuda] # only if you have CUDA environment for an Nvidia GPU
 ```
 
 Download some models and note their types. For huggingface models
@@ -43,20 +44,20 @@ TEXT_MODEL = 'open-llama-3b-v2-q4_0.bin'
 TEXT_MODEL_TYPE = 'llama'
 TEXT_TEMPERATURE = 0.37
 TEXT_MAX_NEW_TOKENS = 73
+TEXT_GPU_LAYERS = 0
 CODE_MODEL =  'stablecode-completion-alpha-3b-4k.ggmlv1.q4_0.bin'
 CODE_MODEL_TYPE = 'gpt-neox'
 CODE_TEMPERATURE = 0.20
 CODE_MAX_NEW_TOKENS = 37
-HOST = '127.0.0.1'
-PORT = 3737
-THREADS = 1
-MODELS_FOLDER = './models/'
-TEXT_MODEL = 'open-llama-3b-v2-q4_0.bin'
-TEXT_MODEL_TYPE = 'llama'
-TEXT_TEMPERATURE = 0.37
-TEXT_MAX_NEW_TOKENS = 73
-CODE_MODEL =  'stablecode-completion-alpha-3b-4k.ggmlv1.q4_0.bin'
-CODE_MODEL_TYPE = 'gpt-neox'
-CODE_TEMPERATURE = 0.19
-CODE_MAX_NEW_TOKENS = 37
+CODE_GPU_LAYERS = 0
+```
+
+### GPU layers
+
+If you have a GPU which supports it, you may use the right value by
+entering a value and checking your GPU memory usage using the
+`nvidia-smi` command line tool.
+
+```
+nvidia-smi
 ```
