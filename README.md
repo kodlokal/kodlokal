@@ -1,4 +1,6 @@
-# Kodlokal Server
+# Ziroton Server
+
+AI Inference Server for the GPU Poor and GPU-less.
 
 ## Install
 
