@@ -4,8 +4,8 @@
 
 Install python requirements
 ```bash
-git clone git@github.com:kodlokal/kodlokal-gateway.git
-cd kodlokal-gateway
+git clone git@github.com:kodlokal/ziroton.git
+cd ziroton
 python -m venv v
 pip install -r requirements.txt
 pip install ctransformers[cuda] # only if you have CUDA environment for an Nvidia GPU
