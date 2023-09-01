@@ -1,6 +1,6 @@
 # Ziroton Server
 
-AI Inference Server for the GPU Poor and GPU-less.
+AI Gateway & Local Inference Server for the GPU Poor and GPU-less.
 
 ## Install
 
