@@ -2,8 +2,9 @@ from ctransformers import AutoModelForCausalLM
 from flask import Flask, request, jsonify
 from waitress import serve
 import logging
-
+import time
 import os
+import json
 
 app = Flask(__name__)
 app.config.from_pyfile('config.py')
@@ -37,67 +38,86 @@ if text_model_exist:
   text_model = AutoModelForCausalLM.from_pretrained(text_model_name,
                                                   model_type=text_model_type,
                                                   gpu_layers=app.config['TEXT_GPU_LAYERS'])
+def full_response(result, prompt, model_name):
+  response_data = {
+    "choices": [
+      {
+        "finish_reason": "length",
+        "index": 0,
+        "logprobs": None,
+        "text": result
+      }
+    ],
+    "created": int(time.time()),
+    "id": "cmpl-7C9Wxi9Du4j1lQjdjhxBlO22M61LD",
+    "model": model_name,
+    "object": "text_completion",
+    "usage": {
+      "completion_tokens": len(result),
+      "prompt_tokens": len(prompt),
+      "total_tokens": len(result) + len(prompt)
+    }
+  }
+  return response_data
 
-def code_suggest(query):
-  return code_model(query,
-                    temperature=app.config['CODE_TEMPERATURE'],
-                    max_new_tokens=app.config['CODE_MAX_NEW_TOKENS'])
+def code_suggest(prompt):
+  result = code_model(prompt,
+                      temperature=app.config['CODE_TEMPERATURE'],
+                      max_new_tokens=app.config['CODE_MAX_NEW_TOKENS'])
 
-def text_suggest(query):
-  return text_model(query,
+  return full_response(result, prompt, code_model_name)
+
+def text_suggest(prompt):
+  result = text_model(prompt,
                     temperature=app.config['TEXT_TEMPERATURE'],
                     max_new_tokens=app.config['TEXT_MAX_NEW_TOKENS'])
 
+  return full_response(result, prompt, text_model_name)
+
 @app.route("/")
 def main():
-  return "Kodlokal server"
+  return "Ziroton Server"
 
-@app.route("/code/completions", methods=["POST"])
-def code_completions():
-  if not code_model_exist:
-    return nil, 404
-  data = request.json
-  query = data.get("q")
-  log.info(f"Starting Query={query}")
-  if query is None or len(query) <= 3:
-    return nil
-  else:
-    result = code_suggest(query)
-    log.info(f"/Finished Result={result}")
-    if result is not None:
-      return result
-    else:
-      return nil
-
-def text_prompt(query, input=""):
+def instruct_prompt(prompt, input=""):
   return f"""### System:
 You are an AI assistant that follows instruction extremely well. Help as much as you can.
 
 ### User:
-{query}
+{prompt}
 
 ### Input:
 {input}
 
 ### Response:"""
 
-@app.route("/text/completions", methods=["POST"])
-def text_completions():
-  if not text_model_exist:
-    return nil, 404
+@app.route("/v1/completions", methods=["POST"])
+def v1_completions():
   data = request.json
-  query = data.get("q")
-  prompt = text_prompt(query)
-  log.info(f"Starting Query={query}")
-  if query is None or len(query) <= 3:
-    return nil
+  model = data.get("model") or "code"
+
+  if model == "code" and not code_model_exist:
+    return {"error": "Model not found"}, 404
+
+  if model == "text" and not text_model_exist:
+    return {"error": "Model not found"}, 404
+
+  prompt = data.get("prompt")
+  if prompt is None or len(prompt) <= 3:
+    return {"error": "Prompt is empty or less than 3 chars"}, 404
+
+  log.info(f"Starting with model={model} prompt={prompt}")
+  if model == "code":
+    result = code_suggest(prompt)
+  elif model == "text":
+    result = text_suggest(prompt)
   else:
-    result = text_suggest(query)
-    log.info(f"/Finished Result={result}")
-    if result is not None:
-      return result
-    else:
-      return nil
+    return {"error": "Model not found"}, 404
+
+  if result is not None:
+    log.info(f"/Finished with completion={json.dumps(result)}")
+    return jsonify(result)
+  else:
+    return {"error": "Result not found"}, 404
 
 if __name__ == "__main__":
   serve(app,
