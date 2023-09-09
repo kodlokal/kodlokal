@@ -76,7 +76,7 @@ def text_suggest(prompt):
 
 @app.route("/")
 def main():
-  return "Ziroton Server"
+  return "Kodlokal Server"
 
 def instruct_prompt(prompt, input=""):
   return f"""### System:
