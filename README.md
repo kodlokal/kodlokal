@@ -1,4 +1,4 @@
-# Ziroton Server
+# Kodlokal Server
 
 AI Gateway & Local Inference Server for the GPU Poor and GPU-less.
 
@@ -6,8 +6,8 @@ AI Gateway & Local Inference Server for the GPU Poor and GPU-less.
 
 Install python requirements
 ```bash
-git clone git@github.com:kodlokal/ziroton.git
-cd ziroton
+git clone git@github.com:kodlokal/kodlokal.git
+cd kodlokal
 python -m venv v
 pip install -r requirements.txt
 pip install ctransformers[cuda] # only if you have CUDA environment for an Nvidia GPU
