@@ -1,19 +1,7 @@
 from ctransformers import AutoModelForCausalLM
-from flask import Flask, request, jsonify
-from waitress import serve
-import logging
+from app.log import log
+from app.kodlokal_app import app
 import time
-import os
-import json
-
-app = Flask(__name__)
-app.config.from_pyfile('config.py')
-
-logging.basicConfig(
-    level=logging.DEBUG,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
-log = logging.getLogger(__name__)
 
 code_model_exist = 'CODE_MODEL' in app.config
 
@@ -74,10 +62,6 @@ def text_suggest(prompt):
 
   return full_response(result, prompt, text_model_name)
 
-@app.route("/")
-def main():
-  return "Kodlokal Server"
-
 def instruct_prompt(prompt, input=""):
   return f"""### System:
 You are an AI assistant that follows instruction extremely well. Help as much as you can.
@@ -89,39 +73,3 @@ You are an AI assistant that follows instruction extremely well. Help as much as
 {input}
 
 ### Response:"""
-
-@app.route("/v1/completions", methods=["POST"])
-def v1_completions():
-  data = request.json
-  model = data.get("model") or "code"
-
-  if model == "code" and not code_model_exist:
-    return {"error": "Model not found"}, 404
-
-  if model == "text" and not text_model_exist:
-    return {"error": "Model not found"}, 404
-
-  prompt = data.get("prompt")
-  if prompt is None or len(prompt) <= 3:
-    return {"error": "Prompt is empty or less than 3 chars"}, 404
-
-  log.info(f"Starting with model={model} prompt={prompt}")
-  if model == "code":
-    result = code_suggest(prompt)
-  elif model == "text":
-    result = text_suggest(prompt)
-  else:
-    return {"error": "Model not found"}, 404
-
-  if result is not None:
-    log.info(f"/Finished with completion={json.dumps(result)}")
-    return jsonify(result)
-  else:
-    return {"error": "Result not found"}, 404
-
-if __name__ == "__main__":
-  serve(app,
-        host=app.config['HOST'],
-        port=app.config['PORT'],
-        threads=app.config['THREADS'],
-        channel_timeout=app.config['TIMEOUT'])
