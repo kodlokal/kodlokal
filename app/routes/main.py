@@ -1,3 +1,4 @@
+from flask import jsonify
 from app.kodlokal_app import app, app_name
 
 
