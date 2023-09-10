@@ -37,12 +37,14 @@ class Model():
                                                         model_type=self.config('MODEL_TYPE'),
                                                         gpu_layers=self.config('GPU_LAYERS'))
   def suggest(self, prompt):
-      result = self.model(prompt,
-                          temperature=self.config('TEMPERATURE'),
-                          max_new_tokens=self.config('MAX_NEW_TOKENS'))
-      return self.full_response(result, prompt)
+    return self.model(prompt,
+                      temperature=self.config('TEMPERATURE'),
+                      max_new_tokens=self.config('MAX_NEW_TOKENS'))
 
-  def full_response(self, result, prompt):
+  def prompt_ok(self, prompt):
+    return prompt is not None and len(prompt) >= 3
+
+  def present(self, result, prompt):
     response_data = {
       "choices": [
           {
