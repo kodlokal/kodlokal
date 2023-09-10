@@ -6,6 +6,6 @@ app = Flask(app_name)
 environment = os.environ.get('ENV', 'production')
 
 if environment == 'test':
-  app.config.from_pyfile('tests/config.py')
+    app.config.from_pyfile('tests/config.py')
 else:
-  app.config.from_pyfile('config.py')
+    app.config.from_pyfile('config.py')

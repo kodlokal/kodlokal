@@ -34,7 +34,7 @@ python run.py
 
 ## Configuration
 
-Configure `config.py` and restart
+Configure `config.py` and restart. If you want remove a model, comment out or remove all its config:
 
 ```
 HOST = '127.0.0.1'
@@ -62,4 +62,27 @@ entering a value and checking your GPU memory usage using the
 
 ```
 nvidia-smi
+```
+
+## Development
+
+Fork this repo and send a PR>
+
+
+Run tests:
+
+```
+ENV=test python -m pytest
+```
+
+Run styler:
+
+```
+pycodestyle tests app
+```
+
+Run formatter
+
+```
+yapf -ir app tests
 ```
