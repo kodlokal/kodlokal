@@ -63,3 +63,14 @@ entering a value and checking your GPU memory usage using the
 ```
 nvidia-smi
 ```
+
+## Development
+
+Fork this repo and send a PR>
+
+
+Run tests:
+
+```
+ENV=test python -m pytest
+```
