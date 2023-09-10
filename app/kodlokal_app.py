@@ -1,8 +1,12 @@
-from flask import Flask
-import os
+"""
+The Flask app
+"""
 
-app_name = 'kodlokal'
-app = Flask(app_name)
+import os
+from flask import Flask
+
+APP_NAME = 'kodlokal'
+app = Flask(APP_NAME)
 environment = os.environ.get('ENV', 'production')
 
 if environment == 'test':

@@ -1,3 +1,7 @@
+"""
+The inference model
+"""
+
 import time
 import uuid
 import os
@@ -19,23 +23,35 @@ class Model():
         self.model = None
         if self.exist():
             self.load()
-            log.info(f"Started {self.category} model for {self.name()}")
+            log.info("Started %s model for %s", self.category, self.name())
         else:
-            log.warning(f"{self.category} model does not exist in config")
+            log.warning("%s model does not exist in config", self.category)
 
     def __str__(self):
         return f'Model category: {self.category}'
 
     def config(self, key):
+        """
+        Configuration parameters for this model
+        """
         return app.config[f"{self.category}_{key}"]
 
     def name(self):
+        """
+        Full path for the model
+        """
         return f"{app.config['MODELS_FOLDER']}{self.config('MODEL')}"
 
     def exist(self):
+        """
+        Is this configured?
+        """
         return f"{self.category}_MODEL" in app.config
 
     def load(self):
+        """
+        Load the machine learning model into the memory
+        """
         if os.path.exists(self.name()):
             self.model = AutoModelForCausalLM.from_pretrained(
                 self.name(),
@@ -45,17 +61,26 @@ class Model():
             self.model = None
 
     def suggest(self, prompt):
+        """
+        Do an inference
+        """
         if self.model is not None:
             return self.model(prompt,
                               temperature=self.config('TEMPERATURE'),
                               max_new_tokens=self.config('MAX_NEW_TOKENS'))
-        else:
-            None
+
+        return None
 
     def prompt_ok(self, prompt):
+        """
+        Is the prompt valid?
+        """
         return prompt is not None and len(prompt) >= 3
 
     def present(self, result, prompt):
+        """
+        Convert the suggestions to an object for jsonification
+        """
         response_data = {
             "choices": [{
                 "finish_reason": "length",

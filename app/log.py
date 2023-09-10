@@ -1,8 +1,12 @@
+"""
+The app logger
+"""
+
 import logging
-from app.kodlokal_app import app_name
+from app.kodlokal_app import APP_NAME
 
 logging.basicConfig(
     level=logging.DEBUG,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
-log = logging.getLogger(app_name)
+log = logging.getLogger(APP_NAME)

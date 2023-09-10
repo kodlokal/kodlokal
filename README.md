@@ -78,11 +78,17 @@ ENV=test python -m pytest
 Run styler:
 
 ```
-pycodestyle tests app
+pycodestyle app tests
 ```
 
 Run formatter
 
 ```
 yapf -ir app tests
+```
+
+Linter
+
+```
+pylint app
 ```

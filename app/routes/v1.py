@@ -1,3 +1,7 @@
+"""
+V1 completion routes
+"""
+
 import json
 from flask import request, jsonify
 from app.kodlokal_app import app
