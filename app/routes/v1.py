@@ -38,7 +38,7 @@ def v1_completions():
         log.error(error)
         return {"error": error}, 404
 
-    log.info(f"Starting with model={category} prompt={prompt}")
+    log.info(f"Starting with model={category} input={json.dumps(data)}")
     suggestion = model.suggest(prompt)
 
     if suggestion is None:
