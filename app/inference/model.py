@@ -13,6 +13,7 @@ class Model():
 
   def __init__(self, category):
     self.category = category
+    self.model = None
     if self.exist():
       self.load()
       log.info(f"Started {self.category} model for {self.name()}")
@@ -56,7 +57,6 @@ class Model():
         {
           "finish_reason": "length",
           "index": 0,
-          "logprobs": None,
           "text": result
         }
       ],

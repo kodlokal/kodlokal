@@ -16,7 +16,7 @@ def mock_model():
 def client():
   app.config['TESTING'] = True
   with app.test_client() as client:
-  yield client
+    yield client
 
 def test_v1_completions_valid(client):
   with patch.object(Model, 'suggest') as mock_suggest:
