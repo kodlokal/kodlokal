@@ -74,3 +74,15 @@ Run tests:
 ```
 ENV=test python -m pytest
 ```
+
+Run styler:
+
+```
+pycodestyle tests app
+```
+
+Run formatter
+
+```
+yapf -ir app tests
+```
