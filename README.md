@@ -34,7 +34,7 @@ python run.py
 
 ## Configuration
 
-Configure `config.py` and restart
+Configure `config.py` and restart. If you want remove a model, comment out or remove all its config:
 
 ```
 HOST = '127.0.0.1'
