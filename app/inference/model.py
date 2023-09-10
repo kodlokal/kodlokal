@@ -1,5 +1,4 @@
-import time
-import uuid
+import time, uuid, os
 from ctransformers import AutoModelForCausalLM
 from app.kodlokal_app import app
 from app.log import log
@@ -33,13 +32,20 @@ class Model():
     return f"{self.category}_MODEL" in app.config
 
   def load(self):
-      self.model = AutoModelForCausalLM.from_pretrained(self.name(),
-                                                        model_type=self.config('MODEL_TYPE'),
-                                                        gpu_layers=self.config('GPU_LAYERS'))
+      if os.path.exists(self.name()):
+        self.model = AutoModelForCausalLM.from_pretrained(self.name(),
+                                                          model_type=self.config('MODEL_TYPE'),
+                                                          gpu_layers=self.config('GPU_LAYERS'))
+      else:
+        self.model = None
+
   def suggest(self, prompt):
-    return self.model(prompt,
-                      temperature=self.config('TEMPERATURE'),
-                      max_new_tokens=self.config('MAX_NEW_TOKENS'))
+    if not self.model is None:
+      return self.model(prompt,
+                        temperature=self.config('TEMPERATURE'),
+                        max_new_tokens=self.config('MAX_NEW_TOKENS'))
+    else:
+      None
 
   def prompt_ok(self, prompt):
     return prompt is not None and len(prompt) >= 3

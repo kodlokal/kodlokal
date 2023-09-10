@@ -33,11 +33,12 @@ def v1_completions():
     return {"error": error}, 404
 
   log.info(f"Starting with model={category} prompt={prompt}")
-  result = model.present(model.suggest(prompt), prompt)
+  suggestion = model.suggest(prompt)
 
-  if result is not None:
-    log.info(f"/Finished with completion={json.dumps(result)}")
-    return jsonify(result)
-  else:
+  if suggestion is None:
     log.error(f"/Finished with no result")
     return {"error": "Result not found"}, 404
+
+  result = model.present(suggestion, prompt)
+  log.info(f"/Finished with completion={json.dumps(result)}")
+  return jsonify(result)
