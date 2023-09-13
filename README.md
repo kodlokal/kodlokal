@@ -1,6 +1,8 @@
 # Kodlokal Server
 
-AI Gateway & Local Inference Server for the GPU Poor and GPU-less.
+AI Local Inference Server for the GPU Poor and GPU-less.
+
+Used for the emacs package https://github.com/kodlokal/kodlokal.el
 
 ## Install
 
