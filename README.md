@@ -6,9 +6,10 @@ AI Gateway & Local Inference Server for the GPU Poor and GPU-less.
 
 Install python requirements
 ```bash
-git clone git@github.com:kodlokal/kodlokal.git
+git clone https://github.com/kodlokal/kodlokal.git
 cd kodlokal
 python -m venv v
+source v/bin/activate
 pip install -r requirements.txt
 pip install ctransformers[cuda] # only if you have CUDA environment for an Nvidia GPU
 ```
@@ -18,7 +19,8 @@ check config.py.
 
 ```
 mkdir models && cd models
-wget https://huggingface.co/TheBloke/stablecode-completion-alpha-3b-4k-GGML/resolve/main/stablecode-completion-alpha-3b-4k.ggmlv1.q5_1.bin
+wget https://huggingface.co/TheBloke/stablecode-completion-alpha-3b-4k-GGML/resolve/main/stablecode-completion-alpha-3b-4k.ggmlv1.q4_0.bin
+wget https://huggingface.co/SlyEcho/open_llama_3b_v2_ggml/resolve/main/open-llama-3b-v2-q4_0.bin
 ```
 
 Configure `config.py` by copying from `config.py.sample`
