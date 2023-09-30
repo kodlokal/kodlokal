@@ -57,8 +57,7 @@ class Model():
                 self.name(),
                 model_type=self.config('MODEL_TYPE'),
                 gpu_layers=self.config('GPU_LAYERS'),
-                context_length=self.config('CONTEXT_LENGTH')
-            )
+                context_length=self.config('CONTEXT_LENGTH'))
         else:
             self.model = None
 
