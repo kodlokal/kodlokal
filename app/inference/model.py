@@ -14,7 +14,7 @@ class Model():
     """
   The model class.
 
-  :param category: the category of the model, one of "TEXT", "CODE"
+  :param category: the category of the model, one of "TEXT", "CODE", "CHAT"
   :category version: str
   """
 

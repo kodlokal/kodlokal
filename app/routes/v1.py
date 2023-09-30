@@ -10,6 +10,7 @@ from app.inference.model import Model
 
 code_model = Model('CODE')
 text_model = Model('TEXT')
+chat_model = Model('CHAT')
 
 
 def choose_model(category):
@@ -17,6 +18,8 @@ def choose_model(category):
         return code_model
     elif category == 'text':
         return text_model
+    elif category == 'chat':
+        return chat_model
     else:
         return None
 
