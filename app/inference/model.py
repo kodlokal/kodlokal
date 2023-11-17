@@ -76,6 +76,8 @@ class Model():
         """
         if self.system_prompt is not None:
             return self.system_prompt.replace('{PROMPT}', prompt)
+        return prompt
+
 
     def suggest(self, prompt):
         """
