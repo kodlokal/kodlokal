@@ -78,7 +78,6 @@ class Model():
             return self.system_prompt.replace('{PROMPT}', prompt)
         return prompt
 
-
     def suggest(self, prompt):
         """
         Do an inference
