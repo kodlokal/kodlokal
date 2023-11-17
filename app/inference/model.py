@@ -61,13 +61,17 @@ class Model():
                 context_length=self.config('CONTEXT_LENGTH'))
             system_template_file_path = f"{self.name()}.system.template"
             if os.path.exists(system_template_file_path):
-                with open(system_template_file_path, 'r', encoding='utf-8') as file:
+                with open(system_template_file_path, 'r',
+                          encoding='utf-8') as file:
                     self.system_prompt = file.read()
         else:
             self.model = None
 
     def get_prompt(self, prompt):
-        if not self.system_prompt is None:
+        """
+        Get system prompt applied
+        """
+        if self.system_prompt is not None:
             return self.system_prompt.replace('{PROMPT}', prompt)
 
     def suggest(self, prompt):
