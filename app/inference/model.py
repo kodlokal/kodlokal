@@ -9,6 +9,8 @@ from ctransformers import AutoModelForCausalLM
 from app.kodlokal_app import app
 from app.log import log
 
+environment = os.environ.get('ENV', 'production')
+
 
 class Model():
     """
@@ -60,7 +62,8 @@ class Model():
                 gpu_layers=self.config('GPU_LAYERS'),
                 context_length=self.config('CONTEXT_LENGTH'))
             system_template_file_path = f"{self.name()}.system.template"
-            if os.path.exists(system_template_file_path):
+            if os.path.exists(
+                    system_template_file_path) and environment != 'test':
                 with open(system_template_file_path, 'r',
                           encoding='utf-8') as file:
                     self.system_prompt = file.read()
