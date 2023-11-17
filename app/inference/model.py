@@ -9,6 +9,8 @@ from ctransformers import AutoModelForCausalLM
 from app.kodlokal_app import app
 from app.log import log
 
+environment = os.environ.get('ENV', 'production')
+
 
 class Model():
     """
@@ -21,6 +23,7 @@ class Model():
     def __init__(self, category):
         self.category = category
         self.model = None
+        self.system_prompt = None
         if self.exist():
             self.load()
             log.info("Started %s model for %s", self.category, self.name())
@@ -58,13 +61,28 @@ class Model():
                 model_type=self.config('MODEL_TYPE'),
                 gpu_layers=self.config('GPU_LAYERS'),
                 context_length=self.config('CONTEXT_LENGTH'))
+            system_template_file_path = f"{self.name()}.system.template"
+            if os.path.exists(
+                    system_template_file_path) and environment != 'test':
+                with open(system_template_file_path, 'r',
+                          encoding='utf-8') as file:
+                    self.system_prompt = file.read()
         else:
             self.model = None
+
+    def get_prompt(self, prompt):
+        """
+        Get system prompt applied
+        """
+        if self.system_prompt is not None:
+            return self.system_prompt.replace('{PROMPT}', prompt)
+        return prompt
 
     def suggest(self, prompt):
         """
         Do an inference
         """
+        prompt = self.get_prompt(prompt)
         if self.model is not None:
             return self.model(prompt,
                               temperature=self.config('TEMPERATURE'),
